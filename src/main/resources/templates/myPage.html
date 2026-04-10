@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>mypage..</h1>
+	<p>
+		<span th:text="${member.username}"></span>님의 마이페이지!
+	</p>
+	<p><input type="text" th:value="${member.id}" id="member_id" hidden="hidden"></p>
+	<table border="1">
+		<tbody>
+			<tr>
+				<td>아이디</td>
+				<td th:text="${member.username}" id="username"></td>
+			</tr>
+			<tr>
+				<td>role</td>
+				<td th:text="${member.role}"></td>
+			</tr>
+			<tr>
+				<td>계좌번호</td>
+				<td th:text="${acc.account_number}"></td>
+			</tr>
+			<tr>
+				<td>금액</td>
+				<td th:text="${acc.blance}" id="blance"></td>
+			</tr>
+			<tr>
+				<td><button id="btn">입금하기</button></td>
+				<td><input type="text" id="amount"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<script>
+		document.querySelector("#btn").addEventListener('click', btn);
+		
+		function btn(){
+			fetch('/restDeposit',{
+				method:'post',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body: JSON.stringify({
+					blance : document.querySelector("#amount").value,
+					member_id : document.querySelector("#member_id").value
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if(data.amount != null)
+					document.querySelector("#blance").innerHTML = data.amount;
+					location.reload();
+			})
+			.catch(error => console.log(error));
+			
+		}
+</script>
+</body>
+</html>

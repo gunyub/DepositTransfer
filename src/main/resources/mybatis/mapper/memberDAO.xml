@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.IMemberDAO">
+	<insert id="regist">
+		INSERT INTO member (username, password, role) VALUES ( #{username},#{password},#{role} )
+	</insert>
+	
+	<insert id="createAcount">
+		INSERT INTO ACCOUNT (blance, member_id, account_number) VALUES ( #{blance},#{member_id},#{accountNumber} )
+	</insert>
+
+	<select id="login" resultType="com.example.demo.dto.ResponseMemberDTO">
+		SELECT *FROM member WHERE username=#{username} AND password=#{password}
+	</select>
+	<select id="findByUsername" resultType="com.example.demo.dto.ResponseMemberDTO">
+		SELECT *FROM member WHERE username = #{username}
+	</select>
+	
+</mapper>

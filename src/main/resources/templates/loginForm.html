@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+아이디: <input type="text" id="username">
+비밀번호 <input type="text" id="password">
+<button id="clickBtn">login</button>
+
+<script>
+	document.querySelector("#clickBtn").addEventListener('click', login);
+	
+	function login(){
+		const username =document.querySelector("#username").value;
+		const password =  document.querySelector("#password").value;
+		
+		fetch('/loginProc',{
+			method:'post',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body: JSON.stringify({
+				username : username,
+				password : password
+			})
+		})
+		.then(response => response.json())
+		.then(data => {
+			if(data.token != null){
+				localStorage.setItem('accessToken',data.token)
+				localStorage.setItem('username',data.username)				
+				location.href ="/"
+			console.log(data.token)
+			console.log(data.username)
+			}
+		})
+		.catch(error => console.log(error));
+		
+	}
+	
+</script>
+</body>
+</html>

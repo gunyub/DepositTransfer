@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>indexPAge</h1>
+	<a href="/registerForm">회원가입</a>
+	<a href="/loginForm">로그인</a>
+	<button id="myPage">마이페이지</button>
+	<button id="transfer">송금하기</button>
+	<script>
+	document.querySelector("#myPage").addEventListener('click', mypage);
+	const username = localStorage.getItem('username');
+	function mypage(){
+		fetch('/restMyPage',{
+			method:'post',
+			headers:{
+				'Authorization':localStorage.getItem("accessToken"),
+				'username': username
+			}
+		})
+		.then(response => response.text())
+		.then(data => {
+			if(data == "ok"){
+				location.href="/myPage?username="+username;
+			}else{				
+				alert("로그인이 필요합니다")
+				location.href="/loginForm";	
+			}
+		})
+	}
+	//--------------------------송금하기---------
+	document.querySelector("#transfer").addEventListener('click',transfer);
+	
+	function transfer(){
+		fetch('/member/transcation',{
+			method:'post',
+			headers:{
+				'Authorization':localStorage.getItem("accessToken")
+			}
+		})
+		.then(response => {
+			if(response.status == 401){
+				alert(response.status);
+				alert("로그인이 만료되었습니다");
+				location.href="/loginForm"
+				throw new Error("토큰이 없습니다")
+			}
+			return response.text();
+		})
+		.then(data => {
+			alert(data);
+			if(data){				
+				location.href="/transcationPage"
+			}
+		})
+		.catch(error => console.log(error))
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/transferProc" method="post">
+	<table border="1">
+		<tbody>
+			<tr>
+				<td>내계좌번호</td>
+				<td><input type="text" th:value="${account_number}" readOnly name="sender_account"></td>
+			</tr>
+			<tr>
+				<td>상대방 계좌번호</td>
+				<td><input type="text" name="receiver_account"></td>
+			</tr>
+			<tr>
+				<td>입금할 금액</td>
+				<td><input type="text" name="amount"></td>
+			</tr>
+			<tr>
+				<td colsapn="2">
+					<input type="text" name="type" value="transfer" hidden="hidden">
+					<button type="submit">송금</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div th:if="${success != 'ok'}" style="color: red;">
+    	<p th:text="${msg}"></p>
+	</div>
+</form>
+</body>
+</html>
